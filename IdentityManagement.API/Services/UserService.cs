@@ -36,16 +36,13 @@ namespace IdentityManagement.API.Services
 
         public async Task<Result<User>> CreateUserAsync(User user, string password)
         {
-            var existingUser = await _userRepo.FindByUsernameAsync(user.Username);
+            var userExists = await _userRepo.ExistsAsync(x => x.Username == user.Username);
 
-            if (existingUser != null) return Result<User>.Failure("username exists");
+            if (userExists) return Result<User>.Failure("username exists");
 
-            if (user.LgaId != null)
-            {
-                var lgaExists = await _lgaRepo.ExistsAsync(x => x.Id == user.LgaId.Value);
+            var lgaExists = await _lgaRepo.ExistsAsync(x => user.LgaId.HasValue && x.Id == user.LgaId.Value);
 
-                if (!lgaExists) return Result<User>.Failure("lga is invalid.");
-            }
+            if (!lgaExists) return Result<User>.Failure("lga is invalid.");
 
             user.PasswordHash = _passwordService.HashPassword(password);
 
