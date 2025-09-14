@@ -23,8 +23,8 @@ builder.Services.AddSwaggerGen(opt => opt.AddSecuritySupport());
 //builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite("Data Source=identity-management-db.sqlite"));
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 
-builder.Services.AddMemoryCache();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+// builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationServiceWithoutCache>();
 builder.Services.AddSingleton<IPasswordService, PasswordService>();
 builder.Services.AddSingleton<ISecurityProvider, SecurityProvider>();
 builder.Services.AddScoped<IUserService, UserService>();

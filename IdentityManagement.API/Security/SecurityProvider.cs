@@ -31,10 +31,8 @@ namespace IdentityManagement.API.Security
                 var hash = MD5.HashData(Encoding.UTF8.GetBytes(data));
                 var generatedCode = (BitConverter.ToUInt32(hash, 0) % 10000).ToString("D4");
 
-                var isMatch = string.Equals(code, generatedCode, StringComparison.Ordinal);
-                if (isMatch)
+                if (string.Equals(code, generatedCode, StringComparison.Ordinal))
                     return true;
-
             }
 
             return false;
